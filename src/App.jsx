@@ -1,17 +1,16 @@
-import jiraLogo from '/jira.svg'
+import CreateTask from './Pages/Tasks/CreateTask.layout'
+import { Provider } from 'react-redux'
+import store from './Redux/store'
 import './App.css'
+import TaskList from './Pages/Tasks/TaskList.layout'
 
 function App() {
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={jiraLogo} className="logo" alt="Jira logo" />
-        </a>
-      </div>
-      <h1>Jira Clone</h1>
-    </>
+    <Provider store={store}>
+    <CreateTask/>
+    <TaskList/>
+    </Provider>
   )
 }
 
