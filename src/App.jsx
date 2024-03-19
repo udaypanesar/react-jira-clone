@@ -1,16 +1,14 @@
-import jiraLogo from '/jira.svg'
-import './App.css'
+import { Provider } from 'react-redux'
+import store from './Redux/store'
+import Navigation from './Navigation/Navigation.layout'
 
 function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={jiraLogo} className="logo" alt="Jira logo" />
-        </a>
-      </div>
-      <h1>Jira Clone</h1>
+    <Provider store={store}>
+      <Navigation/>
+    </Provider>
     </>
   )
 }
