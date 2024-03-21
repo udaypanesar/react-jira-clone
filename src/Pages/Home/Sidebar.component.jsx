@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const Sidebar = () => {
   return (
     <>
-      <div className="fixed top-11 w-56 h-screen pt-11 shadow-inner px-3 border-r-2 bg-gray-50">
+      <div className="w-64 h-full pt-11 shadow-inner px-3 border-r-2 bg-gray-50">
         <div className="flex items-center px-3 mb-8">
           <img src={jira2Logo} className="h-7 mr-2" />
           <div>

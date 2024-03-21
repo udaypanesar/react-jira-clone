@@ -1,9 +1,9 @@
 import jiraLogo from "/jira.svg";
-import profilePic from "/profile-picture.jpg";
+import profilePic from "/person1.jpg";
 
 const Navbar = () => {
   return (
-    <div className="fixed top-0 z-50 w-full bg-white border-b">
+    <div className="z-50 w-full bg-white border-b">
       <div className="py-2 px-3">
         <div className="flex items-center justify-between">
           <div className="flex px-3">

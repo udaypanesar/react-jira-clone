@@ -2,10 +2,21 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createTask } from "./Task.Slice";
+
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+
+import { ChevronUp, ChevronDown, ChevronsUp, Check, Bookmark, CircleAlert } from "lucide-react";
+import person1 from "/person1.jpg";
+import person2 from "/person2.jpg";
+import person3 from "/person3.jpg";
 
 const CreateTask = () => {
   const [formData, setFormData] = useState(null);
+  const [openModal,setOpenModal] = useState(false);
   const dispatch = useDispatch();
 
   const onInputChange = (event) => {
@@ -13,124 +24,174 @@ const CreateTask = () => {
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const onSaveClick = () => {
-    dispatch(createTask(formData));
+  const onSelectInputChange = (name,value) => {
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
-  console.log("Task compo called");
+
+  const onSaveClick = () => {
+    console.log(formData);
+    dispatch(createTask(formData));
+    setOpenModal(false)
+  };
+
   return (
     <>
-      <div className="container my-auto flex justify-center py-8 mx-auto bg-gray-50">
-        <div className="w-full  bg-white rounded-lg shadow-md sm:max-w-2xl">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-2xl font-medium  text-gray-600">Create Issue</h1>
-            <div>
-              <div className="mb-4">
-                <label className="block mb-2 text-sm font-medium text-gray-600">Issue Type</label>
-                <select className="bg-gray-100 border-gray-300 text-gray-600 text-sm rounded-lg block w-full p-2.5">
-                  <option>Task</option>
-                  <option>Bug</option>
-                  <option>Story</option>
-                </select>
-              </div>
+      <Dialog open={openModal} onOpenChange={setOpenModal}>
+        <DialogTrigger asChild>
+          <Button variant="secondary" size="sm">
+            Create Issue
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[800px] sm:max-h-[calc(100dvh_-_2rem)] overflow-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl text-gray-600 pb-4">Create Issue</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col gap-6 ">
+            <div className="grid w-full gap-2">
+              <Label>Issue Type</Label>
+              <Select name="uType" onValueChange={(value)=>onSelectInputChange('uType',value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select issue type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Story">
+                    <div className="flex items-center gap-2">
+                      <Bookmark color="white" strokeWidth={3} size={16} className="bg-[#68bc3c] p-0.5 rounded-sm" />
+                      <span>Story</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="Task">
+                    <div className="flex items-center gap-2">
+                      <Check color="white" strokeWidth={3} className="bg-[#4bade8] p-0.5 w-4 h-4 rounded-sm" />
+                      <span>Task</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="Bug">
+                    {" "}
+                    <div className="flex items-center gap-2">
+                      <CircleAlert color="white" strokeWidth={3} className="bg-[#e84c3c] p-0.5 w-4 h-4 " />
+                      <span>Bug</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-              <hr />
+            <div className="grid w-full gap-2">
+              <Label>Short summary</Label>
+              <Input type="text" name="uSummary" onChange={onInputChange} />
+              <p className="text-xs text-gray-500">Concisely summarize the issue in one or two sentences.</p>
+            </div>
 
-              <div className="mt-4 mb-4">
-                <label className="block mb-2 text-sm font-medium text-gray-600">Short summary</label>
-                <input
-                  type="text"
-                  className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                />
-                <p className="mt-1 text-xs text-gray-500">Concisely summarize the issue in one or two sentences.</p>
-              </div>
+            <div className="grid w-full gap-2">
+              <Label>Description</Label>
+              <textarea
+                rows="4"
+                name="uDescription"
+                onChange={onInputChange}
+                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              />
+              <p className="text-xs text-gray-500">Describe the issue in as much detail as you'd like..</p>
+            </div>
 
-              <div className="mb-4">
-                <label className="block mb-2 text-sm font-medium text-gray-600">Description</label>
-                <textarea
-                  id="message"
-                  rows="4"
-                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border border-gray-300 focus:border-blue-500"
-                />
-                <p className="mt-1 text-xs text-gray-500">Describe the issue in as much detail as you'd like..</p>
-              </div>
+            <div className="grid w-full gap-2">
+              <Label>Reporter</Label>
+              <Select name="uReporter" onValueChange={(value)=>onSelectInputChange('uReporter',value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select repoter" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="User1">
+                    <div className="flex items-center gap-2">
+                      <img className="w-5 h-5 rounded-full" src={person1} alt="Rounded avatar" />
+                      <span>User1</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="User2">
+                    <div className="flex items-center gap-2">
+                      <img className="w-5 h-5 rounded-full" src={person2} alt="Rounded avatar" />
+                      <span>User2</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="User3">
+                    <div className="flex items-center gap-2">
+                      <img className="w-5 h-5 rounded-full" src={person3} alt="Rounded avatar" />
+                      <span>User3</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-              <div className="mb-4">
-                <label className="block mb-2 text-sm font-medium text-gray-600">Reporter</label>
-                <select className="bg-gray-100 border-gray-300 text-gray-600 text-sm rounded-lg block w-full p-2.5">
-                  <option>User1</option>
-                  <option>User2</option>
-                  <option>User3</option>
-                </select>
-              </div>
+            <div className="grid w-full gap-2">
+              <Label>Assignees</Label>
+              <Select name="uTeamMember" onValueChange={(value)=>onSelectInputChange('uTeamMember',value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select repoter" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="User1">
+                    <div className="flex items-center gap-2">
+                      <img className="w-5 h-5 rounded-full" src={person1} alt="Rounded avatar" />
+                      <span>User1</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="User2">
+                    <div className="flex items-center gap-2">
+                      <img className="w-5 h-5 rounded-full" src={person2} alt="Rounded avatar" />
+                      <span>User2</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="User3">
+                    <div className="flex items-center gap-2">
+                      <img className="w-5 h-5 rounded-full" src={person3} alt="Rounded avatar" />
+                      <span>User3</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-              <div className="mb-4">
-                <label className="block mb-2 text-sm font-medium text-gray-600">Assignees</label>
-                <select className="bg-gray-100 border-gray-300 text-gray-600 text-sm rounded-lg block w-full p-2.5">
-                  <option>User1</option>
-                  <option>User2</option>
-                  <option>User3</option>
-                </select>
-              </div>
-
-              <div className="mb-4">
-                <label className="block mb-2 text-sm font-medium text-gray-600">Priority</label>
-                <select className="bg-gray-100 border-gray-300 text-gray-600 text-sm rounded-lg block w-full p-2.5">
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                </select>
-                <p className="mt-1 text-xs text-gray-500">Priority in relation to other issues.</p>
-              </div>
-
-              <div className="flex justify-end gap-3">
-              <Button>Create Issue</Button>
-              <Button variant="ghost" >Cancel</Button>
-              </div>
+            <div className="grid w-full gap-2">
+              <Label>Priority</Label>
+              <Select name="uPriority" onValueChange={(value)=>onSelectInputChange('uPriority',value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select repoter" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="High">
+                    <div className="flex items-center">
+                      <ChevronsUp color="red" />
+                      <span>High</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="Medium">
+                    <div className="flex items-center">
+                      <ChevronUp color="tomato" />
+                      <span>Medium</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="Low">
+                    <div className="flex items-center">
+                      <ChevronDown color="orange" />
+                      <span>Low</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="mt-1 text-xs text-gray-500">Priority in relation to other issues.</p>
             </div>
           </div>
-        </div>
-      </div>
-
-      <label>Project name</label>
-      <input type="text" name="uProject" onChange={onInputChange} />
-      <br />
-      {/* This will be a dropdown */}
-      <label>Task Type</label>
-      <select name="uType" onChange={onInputChange}>
-        <option value="task">New task</option>
-        <option value="bug">Bug</option>
-      </select>
-      <br />
-      <label>Short Summary</label>
-      <input type="text" name="uSummary" onChange={onInputChange} />
-      <br />
-      <label>Description</label>
-      <input type="text" name="uDescription" onChange={onInputChange} />
-      <br />
-      {/* This will be a dropdown */}
-      <label>Status</label>
-      <select name="uStatus" onChange={onInputChange}>
-        <option value="Backlog">Backlog</option>
-        <option value="Todo">To do</option>
-        <option value="InProgress">In Progress</option>
-        <option value="Done">Done</option>
-      </select>
-      <br />
-      <label>Assignees</label>
-      <input type="text" name="uTeamMember" onChange={onInputChange} />
-      <br />
-      <label>Story Points</label>
-      <input type="text" name="uStoryPoint" onChange={onInputChange} />
-      <br />
-      {/* This will be a dropdown */}
-      <label>Priority</label>
-      <select name="uPriority" onChange={onInputChange}>
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
-      <br />
-      <button onClick={onSaveClick}>Save</button>
+          <DialogFooter>
+            <div className="flex justify-end gap-3">
+              <Button onClick={onSaveClick}>Create Issue</Button>
+              <DialogClose asChild>
+                <Button variant="ghost">Cancel</Button>
+              </DialogClose>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

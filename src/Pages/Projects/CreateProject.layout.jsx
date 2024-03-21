@@ -1,6 +1,6 @@
 const Projects = () => {
   return (
-    <div className="container my-auto flex justify-center py-8 mx-auto bg-gray-50">
+    <div className="container my-auto flex justify-center py-8 mx-auto">
       <div className="w-full  bg-white rounded-lg shadow-md sm:max-w-2xl">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-2xl font-bold  text-gray-900">Project Details</h1>
