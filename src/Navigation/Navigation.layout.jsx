@@ -1,8 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-//import CreateTask from "../Pages/Tasks/CreateTask.layout";
 import Projects from "../Pages/Projects/CreateProject.layout";
 import HomePage from "../Pages/Home/Home.layout";
-import Backlog from "@/Pages/Tasks/Backlog.component";
+import Backlog from "../Pages/Tasks/Backlog.layout";
 
 const router = createBrowserRouter([
   {
@@ -10,7 +9,7 @@ const router = createBrowserRouter([
     element: <HomePage />,
     children: [
       {
-        path: "/task",
+        path: "/backlog",
         element: <Backlog />,
       },
       {

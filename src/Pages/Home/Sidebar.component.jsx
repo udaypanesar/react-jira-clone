@@ -17,7 +17,7 @@ const Sidebar = () => {
         </div>
         <ul className="flex flex-col gap-4">
           <li>
-            <Link to={"/task"} className="flex items-center px-3 py-1 rounded-lg hover:bg-blue-100">
+            <Link to={"/backlog"} className="flex items-center px-3 py-1 rounded-lg hover:bg-blue-100">
               <img src={backlog} className="h-7 mr-2" />
               <span>Backlog</span>
             </Link>
